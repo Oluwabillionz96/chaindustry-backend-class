@@ -9,6 +9,13 @@ const helmet = require('helmet');
 
 const app = express();
 
+const authRoute = require("./routes/auth");
+const ProductRoute = require("./routes/product");
+const CategoryRoute = require("./routes/category");
+
+const { connectDB } = require('./config/db');
+connectDB()
+
 app.use(cors())
 app.use(helmet());
 
@@ -22,14 +29,14 @@ app.use(limiter);
 app.use(express.json());
 
 app.get('/', (req, res, next) => {
-    console.log(req.body);
-    console.log(req.query);
-    console.log(req.params);
-    console.log(req.headers);
     res.status(200).json({
         message: "Welcome to express App"
     });
 });
+
+app.use('/api/v1/auth', authRoute)
+app.use('/api/v1/product', ProductRoute)
+app.use('/api/v1/category', CategoryRoute)
 
 app.use((req, res, next) => {
     res.status(404).json({
