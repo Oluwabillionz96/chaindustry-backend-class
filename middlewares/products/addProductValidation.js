@@ -6,7 +6,7 @@ const schema = Joi.object({
     description: Joi.string(),
     price: Joi.number().required(),
     images: Joi.any().required(),
-    quantity: Joi.number().min(1).required()
+    quantity: Joi.number().integer().min(1).required()
 });
 
 const validateData = async (req, res, next) => {
@@ -15,8 +15,7 @@ const validateData = async (req, res, next) => {
         req.body = result
         next()
     } catch (err){
-        console.log(err.message)
-        next(new ErrorResponse(err.message, 400))
+        next(new ErrorResponse(err.message.replace(/[\\"]/gi, ""), 400))
     }
 }
 

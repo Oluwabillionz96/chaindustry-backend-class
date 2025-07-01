@@ -14,6 +14,7 @@ const ProductRoute = require("./routes/product");
 const CategoryRoute = require("./routes/category");
 
 const { connectDB } = require('./config/db');
+const errorHandler = require('./middlewares/error');
 connectDB()
 
 app.use(cors())
@@ -44,12 +45,7 @@ app.use((req, res, next) => {
     })
 });
 
-app.use((err, req, res, next) => {
-    console.log(err);
-    res.status(500).json({
-        message: "Internal server error"
-    })
-});
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 5001;
 const HOST = process.env.IP || '127.0.0.1';

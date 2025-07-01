@@ -8,7 +8,7 @@ const route = express.Router()
 route.post('/add', validateData, addProduct);
 route.put('/edit', editProduct);
 route.get('/view-one', viewProduct);
-route.get('/payment', viewProducts);
+route.get('/view', viewProducts);
 route.delete('/delete', deleteProduct);
 
 module.exports = route
