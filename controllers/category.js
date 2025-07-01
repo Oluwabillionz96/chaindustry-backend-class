@@ -1,13 +1,14 @@
 const Category = require("../models/Category")
 // add Category
 const addCategory = async ( req, res, next) => {
-    const { name, description } = req.body
+    const { name, description, userId } = req.body
     const data = {
         name,
-        description
+        description,
+        userId
     }
 
-    const check = await Category.findOne({name:name})
+    const check = await Category.findOne({name:name, user:userId})
     if(check){
         res.status(400).json({
             error: true,

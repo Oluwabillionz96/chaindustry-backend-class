@@ -2,16 +2,18 @@ const Product = require("../models/product")
 const ErrorResponse = require("../utils/ErrorResponse")
 // add product
 const addProduct = async ( req, res, next) => {
-    const { name, description, quantity, price, images } = req.body
+    const { name, description, quantity, price, images,  userId, categoryId } = req.body
     const data = {
         name,
         description,
         quantity,
         price,
-        slug: images
+        slug: images,
+        userId,
+        categoryId
     }
 
-    const check = await Product.findOne({name:name})
+    const check = await Product.findOne({name:name, user: userId})
     if(check){
         throw new ErrorResponse(`The product ${data.name} already exist`, 400)
     }else{
