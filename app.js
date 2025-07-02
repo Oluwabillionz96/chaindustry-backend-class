@@ -12,6 +12,7 @@ const app = express();
 const authRoute = require("./routes/auth");
 const ProductRoute = require("./routes/product");
 const CategoryRoute = require("./routes/category");
+const ShopRoute = require("./routes/shop");
 
 const { connectDB } = require('./config/db');
 const errorHandler = require('./middlewares/error');
@@ -38,6 +39,8 @@ app.get('/', (req, res, next) => {
 app.use('/api/v1/auth', authRoute)
 app.use('/api/v1/product', ProductRoute)
 app.use('/api/v1/category', CategoryRoute)
+app.use('/api/v1/shop', ShopRoute)
+
 
 app.use((req, res, next) => {
     res.status(404).json({

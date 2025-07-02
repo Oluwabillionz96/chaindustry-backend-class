@@ -1,85 +1,69 @@
-const Product = require("../models/product")
-const ErrorResponse = require("../utils/ErrorResponse")
-// add product
-const addProduct = async ( req, res, next) => {
-    const { name, description, quantity, price, images,  userId, categoryId } = req.body
-    const data = {
-        name,
-        description,
-        quantity,
-        price,
-        slug: images,
-        userId,
-        categoryId
-    }
+const addProduct = require("../services/product/addProduct");
+const viewProduct = require("../services/product/viewProduct");
 
-    const check = await Product.findOne({name:name, user: userId})
-    if(check){
-        throw new ErrorResponse(`The product ${data.name} already exist`, 400)
-    }else{
-        await Product.create(data)
-        res.status(201).json({
-            success: true,
-            data,
-            message: "Created successfully"
-        });
-    }
+// add product
+module.exports.addProduct = async ( req, res, next) => {
+    const result = await addProduct(req, res, next)
+    res.status(201).json({
+        success: true,
+        message: "Created successfully",
+        data: result,
+    });
 }
 
 // edit product
-const editProduct = async (req, res, next) => {
-  const { name, description, quantity, price, images } = req.body;
-  const data = {
-    name,
-    description,
-    quantity,
-    price,
-    slug: images,
-  };
-  const product = await Product.findById(req.params.id);
-  if (!product) {
-    return res.status(404).json({ message: "Product not found" });
-  }
+// const editProduct = async (req, res, next) => {
+//   const { name, description, quantity, price, images } = req.body;
+//   const data = {
+//     name,
+//     description,
+//     quantity,
+//     price,
+//     slug: images,
+//   };
+//   const product = await Product.findById(req.params.id);
+//   if (!product) {
+//     return res.status(404).json({ message: "Product not found" });
+//   }
 
-  await Product.findByIdAndUpdate(req.params.id, data);
+//   await Product.findByIdAndUpdate(req.params.id, data);
 
-  res
-    .status(201)
-    .json({ success: true, data, message: "Updated Successfully" });
-};
+//   res
+//     .status(201)
+//     .json({ success: true, data, message: "Updated Successfully" });
+// };
 
 // view product
-const viewProduct = async (req, res, next) => {
-  const product = await Product.findById(req.params.id);
+module.exports.viewProduct = async (req, res, next) => {
+    const result = await viewProduct(req, res, next)
+    res.status(201).json({
+        success: true,
+        message: "Products found",
+        data: result,
+    });
+}
 
-  if (!product) {
-    return res.status(404).json({ message: "No product found" });
-  }
+// // view products
+// const viewProducts = async (req, res, next) => {
+//   const product = await Product.find();
 
-  res.status(200).json({ success: true, product });
-};
+//   if (!product) {
+//     return res.status(404).json({ message: "No product found" });
+//   }
 
-// view products
-const viewProducts = async (req, res, next) => {
-  const product = await Product.find();
+//   res.status(200).json({ success: true, product });
+// };
 
-  if (!product) {
-    return res.status(404).json({ message: "No product found" });
-  }
+// // delete product
+// const deleteProduct = async (req, res, next) => {
+//   const product = await Product.findById(req.params.id);
+//   if (!product) {
+//     return res.status(404).json({ message: "Product not found" });
+//   }
 
-  res.status(200).json({ success: true, product });
-};
+//   await Product.findByIdAndDelete(req.params.id);
 
-// delete product
-const deleteProduct = async (req, res, next) => {
-  const product = await Product.findById(req.params.id);
-  if (!product) {
-    return res.status(404).json({ message: "Product not found" });
-  }
+//   res.status(201).json({ success: true, message: "Deleted Successfully" });
+// };
 
-  await Product.findByIdAndDelete(req.params.id);
-
-  res.status(201).json({ success: true, message: "Deleted Successfully" });
-};
-
-module.exports = { addProduct, editProduct, viewProduct, viewProducts, deleteProduct }
+// module.exports = { addProduct, editProduct, viewProduct, viewProducts, deleteProduct }
