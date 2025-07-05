@@ -1,19 +1,29 @@
 const nodemailer = require('nodemailer')
 
-const sendMail = async (options) => {
+const sendMailData = async (options) => {
     const credentials = nodemailer.createTransport({
         host: process.env.MAILHOST,
-        secure: process.env.MAILSECURE,
+        port: process.env.MAILPORT || 465,
+        secure: process.env.MAILSECURE || true,
         // service: process.env.MAILSERVICE,
-        port: process.env.MAILPORT,
         auth: {
             user: process.env.MAILUSER,
             pass: process.env.MAILPASSWORD,
         }
     });
-    const send = await credentials.sendMail(options)
-    console.log(send)
+
+    const message = {
+        from: `chaindustry <no-reply@chaindustry.io>`,
+        to: options.email,
+        subject: options.subject,
+        html: options.message,
+        text: options.body,
+    };
+
+    const info = await credentials.sendMail(message);
+
+    console.log("Message sent: %s", info.messageId);
 }
 
-module.exports = sendMail
+module.exports = sendMailData
 
