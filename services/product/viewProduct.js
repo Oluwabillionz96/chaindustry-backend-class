@@ -5,7 +5,9 @@ const ErrorResponse = require("../../utils/ErrorResponse")
 
 const viewProduct = async ( req, res, next) => {
     const { id } = req.params
-    const product = await Product.findById(id)
+    const userId = req.user._id
+
+    const product = await Product.findOne({ _id: id, user: userId })
     .populate('user', 'email')
     .populate('shop', 'name location brand')
     .populate('category', 'name description');
@@ -13,7 +15,7 @@ const viewProduct = async ( req, res, next) => {
         throw new ErrorResponse("No product found", 404)
     }
 
-    return product
+    return [ product, req.user ]
 }
 
 module.exports = viewProduct

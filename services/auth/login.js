@@ -14,7 +14,7 @@ const login = async (req) => {
         throw new ErrorResponse(`Password mismatch`, 400)
     }
     
-    return user
+    return await user.getJWTToken()
 }
 
 module.exports = login
