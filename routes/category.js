@@ -1,10 +1,17 @@
-const express = require('express')
+const express = require("express");
 
-const { addCategory } = require('../controllers/category');
-const validateCategoryData = require('../middlewares/categories/addCategoryValidation');
+const {
+  addCategory,
+  editCategory,
+  viewCategories,
+  viewCategory,
+} = require("../controllers/category");
+const validateCategoryData = require("../middlewares/categories/addCategoryValidation");
 
-const route = express.Router()
+const route = express.Router();
 
-route.post('/add', validateCategoryData,  addCategory);
-
-module.exports = route
+route.post("/add", validateCategoryData, addCategory);
+route.post("/edit", editCategory);
+route.get("/", viewCategories);
+route.get("/:id", viewCategory);
+module.exports = route;
