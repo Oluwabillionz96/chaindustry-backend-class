@@ -1,9 +1,7 @@
-const {
-  addCategory,
-  editCategory,
-  viewCategory,
-  viewCategories,
-} = require("../services/category/addCategory");
+const addCategory = require("../services/category/addCategory");
+const editCategory = require("../services/category/editCategory");
+const viewCategories = require("../services/category/ViewCategories");
+const viewCategory = require("../services/category/ViewCategory");
 
 module.exports.addCategory = async (req, res, next) => {
   const result = await addCategory(req, res, next);
@@ -32,9 +30,9 @@ module.exports.viewCategory = async (req, res, next) => {
 };
 
 module.exports.viewCategories = async (req, res, next) => {
-    const result = await viewCategories(req, res, next);
-    res.status(200).json({
-      success: true,
-      data: result,
-    });
+  const result = await viewCategories(req, res, next);
+  res.status(200).json({
+    success: true,
+    data: result,
+  });
 };
