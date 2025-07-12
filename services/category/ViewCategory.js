@@ -4,7 +4,9 @@ const ErrorResponse = require("../../utils/ErrorResponse");
 const viewCategory = async (req, res, next) => {
   const { id } = req.params;
 
-  const check = await Category.findById(id);
+  const check = await Category.findById(id)
+    .populate("user", "name email")
+    .populate("shop", "name location");
   if (!check) {
     throw new ErrorResponse(
       `The category you are lokking for doesn't exsist`,

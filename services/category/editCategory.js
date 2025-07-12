@@ -2,16 +2,16 @@ const Category = require("../../models/Category");
 const ErrorResponse = require("../../utils/ErrorResponse");
 
 const editCategory = async (req, res, next) => {
-  const { name, description, userId, id } = req.body;
-  const check = await Category.findOne({ _id: id });
+  const { name, description, id } = req.body;
+  const check = await Category.findById(id);
   if (!check) {
     throw new ErrorResponse(
-      `The category you are lokking for doesn't exsist`,
+      `The category you are looking for doesn't exsist`,
       404
     );
   }
 
-  if (check.user != userId) {
+  if (!check.user == req.user._id) {
     console.log(check.user, userId);
     throw new ErrorResponse(`You have no authority to edit this category`, 403);
   }
